@@ -35,6 +35,9 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+//for turning reflectors on/off
+int turnOn1 = 1;
+int turnOn2 = 1;
 
 glm::vec3 lightPos(0.0f, 3.0f, -1.0f);
 
@@ -105,7 +108,7 @@ int main()
     Model swing(FileSystem::getPath("resources/objects/swing/10549_ChildrenSwingSet_v1-LoD2.obj"));
     Model carousel(FileSystem::getPath("resources/objects/carousel/model.obj"));
     Model seesaw(FileSystem::getPath("resources/objects/seesaw/10547_Childrens_Seesaw_v2-L3.obj"));
-    Model reflector("resources/objects/external-light/Faretto.obj");
+    Model reflector("resources/objects/stage_down_light_texture_4/scene.gltf");
     Model gifts("resources/objects/stack_of_christmas_gifts/scene.gltf");
 
     float vertices[] = {
@@ -211,8 +214,8 @@ int main()
     };
 
     glm::vec3 spotLightPositions[] = {
-            glm::vec3( -3.8f,-1.15f,0.0f),
-            glm::vec3( 3.8f,-1.15f,0.0f)
+            glm::vec3( -3.8f,-1.2f,0.0f),
+            glm::vec3( 3.8f,-1.2f,0.0f)
     };
 
     unsigned int VBO, stageVAO;
@@ -314,8 +317,14 @@ int main()
         giftShader.setFloat("spotLights[0].constant", 1.0f);
         giftShader.setFloat("spotLights[0].linear", 0.09);
         giftShader.setFloat("spotLights[0].quadratic", 0.032);
-        giftShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(5.5f)));
-        giftShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(7.0f)));
+        if(turnOn1 == 1){
+            giftShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(10.0f)));
+            giftShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(12.0f)));
+        }
+        else{
+            giftShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(0.0f)));
+            giftShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(0.0f)));
+        }
         giftShader.setVec3("viewPos", camera.Position);
 
         giftShader.setVec3("spotLights[1].position", spotLightPositions[1]);
@@ -326,9 +335,15 @@ int main()
         giftShader.setFloat("spotLights[1].constant", 1.0f);
         giftShader.setFloat("spotLights[1].linear", 0.09);
         giftShader.setFloat("spotLights[1].quadratic", 0.032);
-        giftShader.setFloat("spotLights[1].cutOff", glm::cos(glm::radians(8.5f)));
-        giftShader.setFloat("spotLights[1].outerCutOff", glm::cos(glm::radians(10.0f)));
-        giftShader.setVec3("viewPos", camera.Position);
+        if(turnOn2 == 1){
+            giftShader.setFloat("spotLights[1].cutOff", glm::cos(glm::radians(10.0f)));
+            giftShader.setFloat("spotLights[1].outerCutOff", glm::cos(glm::radians(12.0f)));
+        }
+        else{
+            giftShader.setFloat("spotLights[1].cutOff", glm::cos(glm::radians(0.0f)));
+            giftShader.setFloat("spotLights[1].outerCutOff", glm::cos(glm::radians(0.0f)));
+        }
+   //     giftShader.setVec3("viewPos", camera.Position);
 
 
         // material properties
@@ -465,20 +480,20 @@ int main()
 
         //REFLECTORS
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-3.8f,-1.15f,0.0f)); // translate it down so it's at the center of the scene
-        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::scale(model, glm::vec3( 0.0009f));	// it's a bit too big for our scene, so scale it down
+        model = glm::translate(model, glm::vec3(-3.8f,-1.2f,0.0f)); // translate it down so it's at the center of the scene
+//        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+ //       model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3( 0.2f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         reflector.Draw(ourShader);
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(3.8f,-1.15f,0.0f)); // translate it down so it's at the center of the scene
-        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::scale(model, glm::vec3( 0.0009f));	// it's a bit too big for our scene, so scale it down
+        model = glm::translate(model, glm::vec3(3.8f,-1.2f,0.0f)); // translate it down so it's at the center of the scene
+  //      model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+   //     model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(175.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3( 0.2f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         reflector.Draw(ourShader);
 
@@ -489,9 +504,8 @@ int main()
 
         //GIFTS
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f,-3.0f,-1.0f)); // translate it down so it's at the center of the scene
-      //  model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::scale(model, glm::vec3( 0.07f));	// it's a bit too big for our scene, so scale it down
+        model = glm::translate(model, glm::vec3(0.0f,-3.0f,-1.0f));
+        model = glm::scale(model, glm::vec3( 0.07f));
         giftShader.setMat4("model", model);
         gifts.Draw(giftShader);
 
@@ -567,6 +581,13 @@ void processInput(GLFWwindow *window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS){
+        turnOn1 = -turnOn1;
+    }
+    if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+    {
+        turnOn2 = -turnOn2;
+    }
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

@@ -1,4 +1,4 @@
-# Install script for directory: /home/svetlana/project_base/libs/imgui
+# Install script for directory: /home/tina/Desktop/RG_projekat/libs/imgui
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
