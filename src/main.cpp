@@ -97,13 +97,16 @@ int main()
 
     Shader skyShader("resources/shaders/sky.vs","resources/shaders/sky.fs");
 
+    Shader giftShader("resources/shaders/gift.vs", "resources/shaders/gift.fs");
+
     // models
 
     //Model ourModel(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
     Model swing(FileSystem::getPath("resources/objects/swing/10549_ChildrenSwingSet_v1-LoD2.obj"));
     Model carousel(FileSystem::getPath("resources/objects/carousel/model.obj"));
     Model seesaw(FileSystem::getPath("resources/objects/seesaw/10547_Childrens_Seesaw_v2-L3.obj"));
-
+    Model reflector("resources/objects/external-light/Faretto.obj");
+    Model gifts("resources/objects/stack_of_christmas_gifts/scene.gltf");
 
     float vertices[] = {
             // positions          // normals           // texture coords
@@ -207,6 +210,11 @@ int main()
             1.0f, -1.0f,  1.0f
     };
 
+    glm::vec3 spotLightPositions[] = {
+            glm::vec3( -3.8f,-1.15f,0.0f),
+            glm::vec3( 3.8f,-1.15f,0.0f)
+    };
+
     unsigned int VBO, stageVAO;
     glGenVertexArrays(1, &stageVAO);
     glGenBuffers(1, &VBO);
@@ -260,6 +268,9 @@ int main()
     unsigned int transparentTexture = loadTexture(FileSystem::getPath("resources/textures/window2.jpg").c_str());
     unsigned int transparentTexture2 = loadTexture(FileSystem::getPath("resources/textures/window3.jpg").c_str());
 
+    giftShader.use();
+    giftShader.setInt("material.diffuse", 0);
+    giftShader.setInt("material.specular", 1);
 
     vector<std::string> faces
     {
@@ -294,6 +305,34 @@ int main()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        giftShader.use();
+        giftShader.setVec3("spotLights[0].position", spotLightPositions[0]);
+        giftShader.setVec3("spotLights[0].direction", glm::vec3(3.8f, -1.85f, -1.0f));
+        giftShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
+        giftShader.setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
+        giftShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
+        giftShader.setFloat("spotLights[0].constant", 1.0f);
+        giftShader.setFloat("spotLights[0].linear", 0.09);
+        giftShader.setFloat("spotLights[0].quadratic", 0.032);
+        giftShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(5.5f)));
+        giftShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(7.0f)));
+        giftShader.setVec3("viewPos", camera.Position);
+
+        giftShader.setVec3("spotLights[1].position", spotLightPositions[1]);
+        giftShader.setVec3("spotLights[1].direction", glm::vec3(-3.8f, -1.85f, -1.0f));
+        giftShader.setVec3("spotLights[1].ambient", 0.0f, 0.0f, 0.0f);
+        giftShader.setVec3("spotLights[1].diffuse", 1.0f, 1.0f, 1.0f);
+        giftShader.setVec3("spotLights[1].specular", 1.0f, 1.0f, 1.0f);
+        giftShader.setFloat("spotLights[1].constant", 1.0f);
+        giftShader.setFloat("spotLights[1].linear", 0.09);
+        giftShader.setFloat("spotLights[1].quadratic", 0.032);
+        giftShader.setFloat("spotLights[1].cutOff", glm::cos(glm::radians(8.5f)));
+        giftShader.setFloat("spotLights[1].outerCutOff", glm::cos(glm::radians(10.0f)));
+        giftShader.setVec3("viewPos", camera.Position);
+
+
+        // material properties
+        giftShader.setFloat("material.shininess", 32.0f);
 
 
         stageShader.use();
@@ -423,6 +462,38 @@ int main()
         model = glm::scale(model, glm::vec3( 0.01f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         seesaw.Draw(ourShader);
+
+        //REFLECTORS
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-3.8f,-1.15f,0.0f)); // translate it down so it's at the center of the scene
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3( 0.0009f));	// it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("model", model);
+        reflector.Draw(ourShader);
+
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(3.8f,-1.15f,0.0f)); // translate it down so it's at the center of the scene
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3( 0.0009f));	// it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("model", model);
+        reflector.Draw(ourShader);
+
+        giftShader.use();
+
+        giftShader.setMat4("projection", projection);
+        giftShader.setMat4("view", view);
+
+        //GIFTS
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f,-3.0f,-1.0f)); // translate it down so it's at the center of the scene
+      //  model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3( 0.07f));	// it's a bit too big for our scene, so scale it down
+        giftShader.setMat4("model", model);
+        gifts.Draw(giftShader);
 
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyShader.use();
