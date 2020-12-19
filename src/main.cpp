@@ -39,7 +39,19 @@ float lastFrame = 0.0f;
 int turnOn1 = 1;
 int turnOn2 = 1;
 
-glm::vec3 lightPos(0.0f, 3.0f, -1.0f);
+struct PointLight {
+    glm::vec3 position;
+
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
+
+    float constant;
+    float linear;
+    float quadratic;
+};
+
+glm::vec3 lightPos(1.0f, 3.0f, -1.0f);
 
 int main()
 {
@@ -96,7 +108,7 @@ int main()
     //Shader windowShader2("resources/shaders/window.vs","resources/shaders/window2.fs");
 
 
-    Shader ourShader("resources/shaders/1.model_loading.vs", "resources/shaders/1.model_loading.fs");
+    Shader ourShader("resources/shaders/1.model_lighting.vs", "resources/shaders/1.model_lighting.fs");
 
     Shader skyShader("resources/shaders/sky.vs","resources/shaders/sky.fs");
 
@@ -110,6 +122,17 @@ int main()
     Model seesaw(FileSystem::getPath("resources/objects/seesaw/10547_Childrens_Seesaw_v2-L3.obj"));
     Model reflector("resources/objects/stage_down_light_texture_4/scene.gltf");
     Model gifts("resources/objects/stack_of_christmas_gifts/scene.gltf");
+
+    carousel.SetShaderTextureNamePrefix("material.");
+
+    PointLight pointLight;
+    pointLight.ambient = glm::vec3(0.6, 0.6, 0.4);
+    pointLight.diffuse = glm::vec3(1.0, 0.8, 0.8);
+    pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
+    pointLight.constant = 1.0f;
+    pointLight.linear = 0.06f;
+    pointLight.quadratic = 0.012f;
+    pointLight.position = lightPos;
 
     float vertices[] = {
             // positions          // normals           // texture coords
@@ -241,6 +264,8 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
 
     unsigned int transparentVAO, transparentVBO;
@@ -271,6 +296,8 @@ int main()
     unsigned int transparentTexture = loadTexture(FileSystem::getPath("resources/textures/window2.jpg").c_str());
     unsigned int transparentTexture2 = loadTexture(FileSystem::getPath("resources/textures/window3.jpg").c_str());
 
+    unsigned int starTexture = loadTexture(FileSystem::getPath("resources/textures/stars.jpg").c_str());
+
     giftShader.use();
     giftShader.setInt("material.diffuse", 0);
     giftShader.setInt("material.specular", 1);
@@ -290,8 +317,15 @@ int main()
     stageShader.use();
     stageShader.setInt("material.diffuse", 0);
     stageShader.setInt("material.specular", 1);
+
     skyShader.use();
-    skyShader.setInt("skybox", 2);
+    skyShader.setInt("skybox", 0);
+
+    centralLightShader.use();
+    centralLightShader.setInt("texture1", 0);
+
+    windowShader.use();
+    windowShader.setInt("texture1", 0);
 
 
     while (!glfwWindowShouldClose(window))
@@ -350,8 +384,11 @@ int main()
         giftShader.setFloat("material.shininess", 32.0f);
 
 
+        float time = glfwGetTime();
+
+
         stageShader.use();
-        stageShader.setVec3("light.position", lightPos);
+        stageShader.setVec3("light.position", glm::vec3(lightPos.x*cos(time), (lightPos.y)*1.0f , lightPos.z*sin(time)));
         stageShader.setVec3("viewPos", camera.Position);
 
         // light properties
@@ -389,14 +426,34 @@ int main()
 
 
 
-        centralLightShader.use();
+       /* centralLightShader.use();
         centralLightShader.setMat4("projection", projection);
         centralLightShader.setMat4("view", view);
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
+        model = glm::translate(model, glm::vec3(lightPos.x*cos(time), (lightPos.y)*1.0f , lightPos.z*sin(time)));
         model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
         centralLightShader.setMat4("model", model);
+
+        glActiveTexture(GL_TEXTURE4);
+        glBindTexture(GL_TEXTURE_2D, starTexture);
+
+        glBindVertexArray(centralLightVAO);*/
+
+
+        centralLightShader.use();
+
+        centralLightShader.setMat4("projection", projection);
+        centralLightShader.setMat4("view", view);
+
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(lightPos.x*cos(time), (lightPos.y)*1.0f , lightPos.z*sin(time)));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+        model = glm::scale(model, glm::vec3(0.5f)); // a smaller cube
+        centralLightShader.setMat4("model", model);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, starTexture);
 
         glBindVertexArray(centralLightVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -405,16 +462,18 @@ int main()
         //first window
 
         glBindVertexArray(transparentVAO);
-        glActiveTexture(GL_TEXTURE3);
-        glBindTexture(GL_TEXTURE_2D, transparentTexture);
+        /*glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, transparentTexture);*/
         windowShader.use();
-        windowShader.setInt("texture1", 3);
+       // windowShader.setInt("texture1", 0);
         windowShader.setMat4("projection", projection);
         windowShader.setMat4("view", view);
         model = glm::mat4(1.0f);
         model = glm::translate(model,glm::vec3(-4.0f,-2.0f,2.0f));
         model = scale(model,glm::vec3(4.0f,2.0f,6.0f));
         windowShader.setMat4("model", model);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, transparentTexture);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
         model = glm::mat4(1.0f);
@@ -440,6 +499,17 @@ int main()
 
         ourShader.use();
 
+
+        ourShader.setVec3("pointLight.position",glm::vec3(lightPos.x * cos(time), lightPos.y*1.0f , lightPos.z*sin(time)));
+        ourShader.setVec3("pointLight.ambient", pointLight.ambient);
+        ourShader.setVec3("pointLight.diffuse", pointLight.diffuse);
+        ourShader.setVec3("pointLight.specular", pointLight.specular);
+        ourShader.setFloat("pointLight.constant", pointLight.constant);
+        ourShader.setFloat("pointLight.linear", pointLight.linear);
+        ourShader.setFloat("pointLight.quadratic", pointLight.quadratic);
+        ourShader.setVec3("viewPosition", camera.Position);
+        ourShader.setFloat("material.shininess", 128.0f);
+
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
@@ -460,7 +530,7 @@ int main()
         swing.Draw(ourShader);
 
         //CAROUSEL
-        float time=glfwGetTime();
+
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.5f,0.25f,-1.7f)); // translate it down so it's at the center of the scene
         model = glm::rotate(model,time,glm::vec3(0.0f,-1.0f,0.0f));
@@ -516,7 +586,7 @@ int main()
         skyShader.setMat4("projection", projection);
         // skybox cube
         glBindVertexArray(skyVAO);
-        glActiveTexture(GL_TEXTURE2);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
@@ -581,10 +651,11 @@ void processInput(GLFWwindow *window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+    {
         turnOn1 = -turnOn1;
     }
-    if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
     {
         turnOn2 = -turnOn2;
     }
