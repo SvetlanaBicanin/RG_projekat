@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <learnopengl/filesystem.h>
-#include <learnopengl/shader_m.h>
+#include <learnopengl/shader.h>
 #include <learnopengl/camera.h>
 #include <learnopengl/model.h>
 
@@ -51,7 +51,7 @@ struct PointLight {
     float quadratic;
 };
 
-glm::vec3 lightPos(1.0f, 3.0f, -1.0f);
+const glm::vec3 lightPos(1.0f, 3.0f, -1.0f);
 
 int main()
 {
@@ -114,16 +114,25 @@ int main()
 
     Shader giftShader("resources/shaders/gift.vs", "resources/shaders/gift.fs");
 
+    Shader balloonShader("resources/shaders/balloon.vs","resources/shaders/balloon.fs", "resources/shaders/balloon_geometry.gs");
+
+
     // models
 
-    //Model ourModel(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
+
     Model swing(FileSystem::getPath("resources/objects/swing/10549_ChildrenSwingSet_v1-LoD2.obj"));
     Model carousel(FileSystem::getPath("resources/objects/carousel/model.obj"));
     Model seesaw(FileSystem::getPath("resources/objects/seesaw/10547_Childrens_Seesaw_v2-L3.obj"));
     Model reflector("resources/objects/stage_down_light_texture_4/scene.gltf");
     Model gifts("resources/objects/stack_of_christmas_gifts/scene.gltf");
+    Model balloon("resources/objects/balloon/13499_Balloon_Cluster_v1_L2.obj");
+
 
     carousel.SetShaderTextureNamePrefix("material.");
+    swing.SetShaderTextureNamePrefix("material.");
+    seesaw.SetShaderTextureNamePrefix("material.");
+    reflector.SetShaderTextureNamePrefix("material.");
+
 
     PointLight pointLight;
     pointLight.ambient = glm::vec3(0.6, 0.6, 0.4);
@@ -294,7 +303,7 @@ int main()
     unsigned int specularMap = loadTexture(FileSystem::getPath("resources/textures/tepih2.jpg").c_str());
 
     unsigned int transparentTexture = loadTexture(FileSystem::getPath("resources/textures/window2.jpg").c_str());
-    unsigned int transparentTexture2 = loadTexture(FileSystem::getPath("resources/textures/window3.jpg").c_str());
+    //unsigned int transparentTexture2 = loadTexture(FileSystem::getPath("resources/textures/window3.jpg").c_str());
 
     unsigned int starTexture = loadTexture(FileSystem::getPath("resources/textures/stars.jpg").c_str());
 
@@ -426,21 +435,6 @@ int main()
 
 
 
-       /* centralLightShader.use();
-        centralLightShader.setMat4("projection", projection);
-        centralLightShader.setMat4("view", view);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(lightPos.x*cos(time), (lightPos.y)*1.0f , lightPos.z*sin(time)));
-        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
-        centralLightShader.setMat4("model", model);
-
-        glActiveTexture(GL_TEXTURE4);
-        glBindTexture(GL_TEXTURE_2D, starTexture);
-
-        glBindVertexArray(centralLightVAO);*/
-
-
         centralLightShader.use();
 
         centralLightShader.setMat4("projection", projection);
@@ -462,10 +456,8 @@ int main()
         //first window
 
         glBindVertexArray(transparentVAO);
-        /*glActiveTexture(GL_TEXTURE3);
-        glBindTexture(GL_TEXTURE_2D, transparentTexture);*/
+
         windowShader.use();
-       // windowShader.setInt("texture1", 0);
         windowShader.setMat4("projection", projection);
         windowShader.setMat4("view", view);
         model = glm::mat4(1.0f);
@@ -508,17 +500,23 @@ int main()
         ourShader.setFloat("pointLight.linear", pointLight.linear);
         ourShader.setFloat("pointLight.quadratic", pointLight.quadratic);
         ourShader.setVec3("viewPosition", camera.Position);
-        ourShader.setFloat("material.shininess", 128.0f);
+        ourShader.setFloat("material.shininess", 64.0f);
 
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
-        //BACKPACK
-        /*model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+
+        //CAROUSEL
+
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.5f,0.25f,-2.2f)); // translate it down so it's at the center of the scene
+        model = glm::rotate(model,time,glm::vec3(0.0f,-1.0f,0.0f));
+        model = glm::rotate(model, glm::radians(60.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-4.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, glm::vec3( 0.2f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
-        ourModel.Draw(ourShader);*/
+
+        carousel.Draw(ourShader);
 
         //SWING
         model = glm::mat4(1.0f);
@@ -529,20 +527,10 @@ int main()
         ourShader.setMat4("model", model);
         swing.Draw(ourShader);
 
-        //CAROUSEL
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(1.5f,0.25f,-1.7f)); // translate it down so it's at the center of the scene
-        model = glm::rotate(model,time,glm::vec3(0.0f,-1.0f,0.0f));
-        model = glm::rotate(model, glm::radians(60.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(-4.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, glm::vec3( 0.2f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", model);
-        carousel.Draw(ourShader);
 
         //SEESAW
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f,-1.0f,1.0f)); // translate it down so it's at the center of the scene
+        model = glm::translate(model, glm::vec3(0.0f,-1.0f,0.5f)); // translate it down so it's at the center of the scene
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3( 0.01f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
@@ -579,6 +567,19 @@ int main()
         giftShader.setMat4("model", model);
         gifts.Draw(giftShader);
 
+        //balloon
+        balloonShader.use();
+        balloonShader.setMat4("view", view);
+        balloonShader.setMat4("projection", projection);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(2.8f,-0.6f,1.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3( 0.03f));
+        balloonShader.setMat4("model", model);
+        balloonShader.setFloat("time", glfwGetTime());
+        balloon.Draw(balloonShader);
+
+
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyShader.use();
         view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
@@ -591,6 +592,8 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
         glDepthFunc(GL_LESS);
+
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();

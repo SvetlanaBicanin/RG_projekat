@@ -94,22 +94,6 @@ iostream
 common.h
 -
 
-../include/learnopengl/shader_m.h
-glad/glad.h
--
-glm/glm.hpp
--
-string
--
-fstream
--
-sstream
--
-iostream
--
-common.h
--
-
 ../include/stb_image.h
 stb_image.h
 ../include/stb_image.h
@@ -152,7 +136,7 @@ stdint.h
 KHR/khrplatform.h
 -
 
-/home/svetlana/Desktop/RG_projekat/RG_projekat/src/main.cpp
+/home/svetlana/Desktop/pomocni/RG_projekat/src/main.cpp
 glad/glad.h
 -
 GLFW/glfw3.h
@@ -167,7 +151,7 @@ glm/gtc/type_ptr.hpp
 -
 learnopengl/filesystem.h
 -
-learnopengl/shader_m.h
+learnopengl/shader.h
 -
 learnopengl/camera.h
 -

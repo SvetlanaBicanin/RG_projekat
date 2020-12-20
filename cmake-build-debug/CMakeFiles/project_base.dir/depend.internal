@@ -8,9 +8,8 @@ CMakeFiles/project_base.dir/src/main.cpp.o
  ../include/learnopengl/mesh.h
  ../include/learnopengl/model.h
  ../include/learnopengl/shader.h
- ../include/learnopengl/shader_m.h
  ../include/stb_image.h
  ../libs/glad/include/KHR/khrplatform.h
  ../libs/glad/include/glad/glad.h
- /home/svetlana/Desktop/RG_projekat/RG_projekat/src/main.cpp
+ /home/svetlana/Desktop/pomocni/RG_projekat/src/main.cpp
  configuration/root_directory.h
