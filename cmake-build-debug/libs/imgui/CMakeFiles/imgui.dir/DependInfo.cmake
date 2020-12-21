@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/svetlana/Desktop/pomocni/RG_projekat/libs/imgui/src/imgui.cpp" "/home/svetlana/Desktop/pomocni/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui.cpp.o"
-  "/home/svetlana/Desktop/pomocni/RG_projekat/libs/imgui/src/imgui_demo.cpp" "/home/svetlana/Desktop/pomocni/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_demo.cpp.o"
-  "/home/svetlana/Desktop/pomocni/RG_projekat/libs/imgui/src/imgui_draw.cpp" "/home/svetlana/Desktop/pomocni/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_draw.cpp.o"
-  "/home/svetlana/Desktop/pomocni/RG_projekat/libs/imgui/src/imgui_impl_glfw.cpp" "/home/svetlana/Desktop/pomocni/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_glfw.cpp.o"
-  "/home/svetlana/Desktop/pomocni/RG_projekat/libs/imgui/src/imgui_impl_opengl3.cpp" "/home/svetlana/Desktop/pomocni/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_opengl3.cpp.o"
-  "/home/svetlana/Desktop/pomocni/RG_projekat/libs/imgui/src/imgui_tables.cpp" "/home/svetlana/Desktop/pomocni/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_tables.cpp.o"
-  "/home/svetlana/Desktop/pomocni/RG_projekat/libs/imgui/src/imgui_widgets.cpp" "/home/svetlana/Desktop/pomocni/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_widgets.cpp.o"
+  "/home/tina/Desktop/RG_projekat/libs/imgui/src/imgui.cpp" "/home/tina/Desktop/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui.cpp.o"
+  "/home/tina/Desktop/RG_projekat/libs/imgui/src/imgui_demo.cpp" "/home/tina/Desktop/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_demo.cpp.o"
+  "/home/tina/Desktop/RG_projekat/libs/imgui/src/imgui_draw.cpp" "/home/tina/Desktop/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_draw.cpp.o"
+  "/home/tina/Desktop/RG_projekat/libs/imgui/src/imgui_impl_glfw.cpp" "/home/tina/Desktop/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_glfw.cpp.o"
+  "/home/tina/Desktop/RG_projekat/libs/imgui/src/imgui_impl_opengl3.cpp" "/home/tina/Desktop/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_opengl3.cpp.o"
+  "/home/tina/Desktop/RG_projekat/libs/imgui/src/imgui_tables.cpp" "/home/tina/Desktop/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_tables.cpp.o"
+  "/home/tina/Desktop/RG_projekat/libs/imgui/src/imgui_widgets.cpp" "/home/tina/Desktop/RG_projekat/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_widgets.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -27,7 +27,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/svetlana/Desktop/pomocni/RG_projekat/cmake-build-debug/libs/glad/CMakeFiles/glad.dir/DependInfo.cmake"
+  "/home/tina/Desktop/RG_projekat/cmake-build-debug/libs/glad/CMakeFiles/glad.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

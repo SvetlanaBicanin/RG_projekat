@@ -35,7 +35,7 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-//for turning reflectors on/off
+//za ukljucivanje i iskljucivanje reflektora
 int turnOn1 = 1;
 int turnOn2 = 1;
 
@@ -118,8 +118,6 @@ int main()
 
 
     // models
-
-
     Model swing(FileSystem::getPath("resources/objects/swing/10549_ChildrenSwingSet_v1-LoD2.obj"));
     Model carousel(FileSystem::getPath("resources/objects/carousel/model.obj"));
     Model seesaw(FileSystem::getPath("resources/objects/seesaw/10547_Childrens_Seesaw_v2-L3.obj"));
@@ -307,10 +305,6 @@ int main()
 
     unsigned int starTexture = loadTexture(FileSystem::getPath("resources/textures/stars.jpg").c_str());
 
-    giftShader.use();
-    giftShader.setInt("material.diffuse", 0);
-    giftShader.setInt("material.specular", 1);
-
     vector<std::string> faces
     {
         FileSystem::getPath("resources/textures/sky/right.jpg"),
@@ -336,7 +330,6 @@ int main()
     windowShader.use();
     windowShader.setInt("texture1", 0);
 
-
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
@@ -352,6 +345,12 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         giftShader.use();
+
+        giftShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+        giftShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+        giftShader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+        giftShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+
         giftShader.setVec3("spotLights[0].position", spotLightPositions[0]);
         giftShader.setVec3("spotLights[0].direction", glm::vec3(3.8f, -1.85f, -1.0f));
         giftShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
@@ -386,8 +385,6 @@ int main()
             giftShader.setFloat("spotLights[1].cutOff", glm::cos(glm::radians(0.0f)));
             giftShader.setFloat("spotLights[1].outerCutOff", glm::cos(glm::radians(0.0f)));
         }
-   //     giftShader.setVec3("viewPos", camera.Position);
-
 
         // material properties
         giftShader.setFloat("material.shininess", 32.0f);
@@ -491,8 +488,7 @@ int main()
 
         ourShader.use();
 
-
-        ourShader.setVec3("pointLight.position",glm::vec3(lightPos.x * cos(time), lightPos.y*1.0f , lightPos.z*sin(time)));
+        ourShader.setVec3("pointLight.position",glm::vec3(lightPos.x * cos(time),lightPos.y*1.0f , lightPos.z*sin(time)));
         ourShader.setVec3("pointLight.ambient", pointLight.ambient);
         ourShader.setVec3("pointLight.diffuse", pointLight.diffuse);
         ourShader.setVec3("pointLight.specular", pointLight.specular);
@@ -538,18 +534,14 @@ int main()
 
         //REFLECTORS
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-3.8f,-1.2f,0.0f)); // translate it down so it's at the center of the scene
-//        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
- //       model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::translate(model, glm::vec3(-3.8f,-1.2f,0.0f));
         model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::scale(model, glm::vec3( 0.2f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         reflector.Draw(ourShader);
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(3.8f,-1.2f,0.0f)); // translate it down so it's at the center of the scene
-  //      model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-   //     model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::translate(model, glm::vec3(3.8f,-1.2f,0.0f));
         model = glm::rotate(model, glm::radians(175.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::scale(model, glm::vec3( 0.2f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
