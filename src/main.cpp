@@ -92,8 +92,8 @@ int main()
     glEnable(GL_DEPTH_TEST);
 
 
-    /*//providnost
-    glEnable(GL_BLEND);
+    //providnost
+    /*glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
 
 
@@ -101,21 +101,14 @@ int main()
      //stbi_set_flip_vertically_on_load(true);
 
     Shader stageShader("resources/shaders/stage.vs", "resources/shaders/stage.fs");
-
     Shader centralLightShader("resources/shaders/centralLight.vs", "resources/shaders/centralLight.fs");
-
     Shader windowShader("resources/shaders/window.vs","resources/shaders/window.fs");
-    //Shader windowShader2("resources/shaders/window.vs","resources/shaders/window2.fs");
-
-
-    Shader ourShader("resources/shaders/1.model_lighting.vs", "resources/shaders/1.model_lighting.fs");
-
+    //Shader windowShader2("resources/shaders/window.vs","resources/shaders/glass.fs");
+    Shader ourShader("resources/shaders/luna_park.vs", "resources/shaders/luna_park.fs");
     Shader skyShader("resources/shaders/sky.vs","resources/shaders/sky.fs");
-
     Shader giftShader("resources/shaders/gift.vs", "resources/shaders/gift.fs");
-
     Shader balloonShader("resources/shaders/balloon.vs","resources/shaders/balloon.fs", "resources/shaders/balloon_geometry.gs");
-
+    Shader glassShader("resources/shaders/glass.vs","resources/shaders/glass.fs");
 
     // models
     Model swing(FileSystem::getPath("resources/objects/swing/10549_ChildrenSwingSet_v1-LoD2.obj"));
@@ -242,6 +235,15 @@ int main()
             -1.0f, -1.0f,  1.0f,
             1.0f, -1.0f,  1.0f
     };
+    float glassVertices[] = {
+
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f
+    };
 
     glm::vec3 spotLightPositions[] = {
             glm::vec3( -3.8f,-1.2f,0.0f),
@@ -296,13 +298,22 @@ int main()
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
+    unsigned int glassVAO, glassVBO;
+    glGenVertexArrays(1, &glassVAO);
+    glGenBuffers(1, &glassVBO);
+    glBindVertexArray(glassVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, glassVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glassVertices), &glassVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+
     // load textures
     unsigned int diffuseMap = loadTexture(FileSystem::getPath("resources/textures/tepih.jpg").c_str());
     unsigned int specularMap = loadTexture(FileSystem::getPath("resources/textures/tepih2.jpg").c_str());
-
     unsigned int transparentTexture = loadTexture(FileSystem::getPath("resources/textures/window2.jpg").c_str());
     //unsigned int transparentTexture2 = loadTexture(FileSystem::getPath("resources/textures/window3.jpg").c_str());
-
     unsigned int starTexture = loadTexture(FileSystem::getPath("resources/textures/stars.jpg").c_str());
 
     vector<std::string> faces
@@ -323,6 +334,9 @@ int main()
 
     skyShader.use();
     skyShader.setInt("skybox", 0);
+
+    glassShader.use();
+    glassShader.setInt("skybox",0);
 
     centralLightShader.use();
     centralLightShader.setInt("texture1", 0);
@@ -368,7 +382,6 @@ int main()
             giftShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(0.0f)));
         }
         giftShader.setVec3("viewPos", camera.Position);
-
         giftShader.setVec3("spotLights[1].position", spotLightPositions[1]);
         giftShader.setVec3("spotLights[1].direction", glm::vec3(-3.8f, -1.85f, -1.0f));
         giftShader.setVec3("spotLights[1].ambient", 0.0f, 0.0f, 0.0f);
@@ -448,6 +461,24 @@ int main()
 
         glBindVertexArray(centralLightVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //glass window
+        glBindVertexArray(glassVAO);
+        glassShader.use();
+        glassShader.setMat4("projection", projection);
+        glassShader.setMat4("view", view);
+        model = glm::mat4(1.0f);
+
+        model = glm::translate(model,glm::vec3(2.0f,-2.0f,-1.012f));
+        model = scale(model,glm::vec3(4.0f,2.0f,6.0f));
+        glassShader.setMat4("model", model);
+        glassShader.setVec3("cameraPos", camera.Position);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+
 
 
         //first window
@@ -559,7 +590,7 @@ int main()
         giftShader.setMat4("model", model);
         gifts.Draw(giftShader);
 
-        //balloon
+        //BALLOON
         balloonShader.use();
         balloonShader.setMat4("view", view);
         balloonShader.setMat4("projection", projection);
@@ -572,6 +603,7 @@ int main()
         balloon.Draw(balloonShader);
 
 
+        // draw skybox as last
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyShader.use();
         view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
