@@ -16,6 +16,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void processInput(GLFWwindow *window);
 unsigned int loadTexture(const char *path);
 
@@ -76,6 +77,7 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetKeyCallback(window, key_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
@@ -678,14 +680,6 @@ void processInput(GLFWwindow *window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-    {
-        turnOn1 = -turnOn1;
-    }
-    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-    {
-        turnOn2 = -turnOn2;
-    }
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -711,6 +705,20 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     lastY = ypos;
 
     camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+    {
+        turnOn1 = -turnOn1;
+    }
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+    {
+        turnOn2 = -turnOn2;
+    }
+
 }
 
 
