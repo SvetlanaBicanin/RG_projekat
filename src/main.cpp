@@ -52,7 +52,7 @@ struct PointLight {
     float quadratic;
 };
 
-const glm::vec3 lightPos(1.0f, 3.0f, -1.0f);
+const glm::vec3 lightPos(1.5f, 3.0f, -2.8f);
 
 int main()
 {
@@ -129,7 +129,7 @@ int main()
 
     PointLight pointLight;
     pointLight.ambient = glm::vec3(0.6, 0.6, 0.4);
-    pointLight.diffuse = glm::vec3(1.0, 0.8, 0.8);
+    pointLight.diffuse = glm::vec3(0.4, 0.4, 0.4);
     pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
     pointLight.constant = 1.0f;
     pointLight.linear = 0.06f;
@@ -407,9 +407,11 @@ int main()
 
         float time = glfwGetTime();
 
+        glm::vec3 light_position = glm::vec3(lightPos.x*cos(time), (lightPos.y)*1.0f , lightPos.z*sin(time));
+    //    glm::vec3 light_position = lightPos;
 
         stageShader.use();
-        stageShader.setVec3("light.position", glm::vec3(lightPos.x*cos(time), (lightPos.y)*1.0f , lightPos.z*sin(time)));
+        stageShader.setVec3("light.position", light_position);
         stageShader.setVec3("viewPos", camera.Position);
 
         // light properties
@@ -453,7 +455,7 @@ int main()
         centralLightShader.setMat4("view", view);
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(lightPos.x*cos(time), (lightPos.y)*1.0f , lightPos.z*sin(time)));
+        model = glm::translate(model, light_position);
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
         model = glm::scale(model, glm::vec3(0.5f)); // a smaller cube
@@ -521,7 +523,7 @@ int main()
 
         ourShader.use();
 
-        ourShader.setVec3("pointLight.position",glm::vec3(lightPos.x * cos(time),lightPos.y*1.0f , lightPos.z*sin(time)));
+        ourShader.setVec3("pointLight.position",light_position);
         ourShader.setVec3("pointLight.ambient", pointLight.ambient);
         ourShader.setVec3("pointLight.diffuse", pointLight.diffuse);
         ourShader.setVec3("pointLight.specular", pointLight.specular);
@@ -580,12 +582,10 @@ int main()
         ourShader.setMat4("model", model);
         reflector.Draw(ourShader);
 
+        //GIFTS
         giftShader.use();
-
         giftShader.setMat4("projection", projection);
         giftShader.setMat4("view", view);
-
-        //GIFTS
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f,-3.0f,-1.0f));
         model = glm::scale(model, glm::vec3( 0.07f));
