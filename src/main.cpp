@@ -105,7 +105,6 @@ int main()
     Shader stageShader("resources/shaders/stage.vs", "resources/shaders/stage.fs");
     Shader centralLightShader("resources/shaders/centralLight.vs", "resources/shaders/centralLight.fs");
     Shader windowShader("resources/shaders/window.vs","resources/shaders/window.fs");
-    //Shader windowShader2("resources/shaders/window.vs","resources/shaders/glass.fs");
     Shader ourShader("resources/shaders/luna_park.vs", "resources/shaders/luna_park.fs");
     Shader skyShader("resources/shaders/sky.vs","resources/shaders/sky.fs");
     Shader giftShader("resources/shaders/gift.vs", "resources/shaders/gift.fs");
@@ -141,45 +140,40 @@ int main()
             -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
             0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
             -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-
-            //front
-           /* -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,*/
 
             -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
             -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
             -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
             -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
             0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
             0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
             -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
             0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
             -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
 
             -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
             0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
             -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+    };
+
+    unsigned indices[] = {
+            0, 1, 2,
+            2, 3, 0,
+            4, 5, 6,
+            6, 7, 4,
+            8, 9, 10,
+            10, 11, 8,
+            12, 13, 14,
+            14, 15, 12,
+            16, 17, 18,
+            18, 19, 16
     };
 
     float transparentVertices[] = {
@@ -245,6 +239,7 @@ int main()
             0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
             -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
             -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f
+
     };
 
     glm::vec3 spotLightPositions[] = {
@@ -252,14 +247,20 @@ int main()
             glm::vec3( 3.8f,-1.2f,0.0f)
     };
 
-    unsigned int VBO, stageVAO;
+    unsigned int VBO, stageVAO, EBO;
     glGenVertexArrays(1, &stageVAO);
+
+    glBindVertexArray(stageVAO);
+
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindVertexArray(stageVAO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -267,16 +268,22 @@ int main()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
     unsigned int centralLightVAO;
     glGenVertexArrays(1, &centralLightVAO);
     glBindVertexArray(centralLightVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
 
     unsigned int transparentVAO, transparentVBO;
@@ -289,6 +296,8 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
     unsigned int skyVAO, skyVBO;
@@ -299,6 +308,9 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(skyVertices), &skyVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
     unsigned int glassVAO, glassVBO;
     glGenVertexArrays(1, &glassVAO);
@@ -311,11 +323,13 @@ int main()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
     // load textures
     unsigned int diffuseMap = loadTexture(FileSystem::getPath("resources/textures/tepih.jpg").c_str());
     unsigned int specularMap = loadTexture(FileSystem::getPath("resources/textures/tepih2.jpg").c_str());
     unsigned int transparentTexture = loadTexture(FileSystem::getPath("resources/textures/window2.jpg").c_str());
-    //unsigned int transparentTexture2 = loadTexture(FileSystem::getPath("resources/textures/window3.jpg").c_str());
     unsigned int starTexture = loadTexture(FileSystem::getPath("resources/textures/stars.jpg").c_str());
 
     vector<std::string> faces
@@ -445,8 +459,7 @@ int main()
 
         // render the stage
         glBindVertexArray(stageVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
         centralLightShader.use();
@@ -464,7 +477,8 @@ int main()
         glBindTexture(GL_TEXTURE_2D, starTexture);
 
         glBindVertexArray(centralLightVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
 
         //glass window
         glBindVertexArray(glassVAO);
@@ -483,10 +497,7 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
 
-
-
         //first window
-
         glBindVertexArray(transparentVAO);
 
         windowShader.use();
@@ -505,21 +516,7 @@ int main()
         model = scale(model,glm::vec3(4.0f,2.0f,6.0f));
         windowShader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        //second window
-        /*glBindVertexArray(transparentVAO);
-        glActiveTexture(GL_TEXTURE4);
-        glBindTexture(GL_TEXTURE_2D, transparentTexture2);
-        windowShader2.use();
-        windowShader2.setInt("texture1", 4);
-        windowShader2.setMat4("projection", projection);
-        windowShader2.setMat4("view", view);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model,glm::vec3(0.0f,-2.0f,2.0f));
-        model = scale(model,glm::vec3(4.0f,2.0f,6.0f));
-        windowShader2.setMat4("model", model);
-        glDrawArrays(GL_TRIANGLES, 0, 6);*/
-
+        glBindVertexArray(0);
 
         ourShader.use();
 
@@ -571,14 +568,14 @@ int main()
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-3.8f,-1.2f,0.0f));
         model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::scale(model, glm::vec3( 0.2f));	// it's a bit too big for our scene, so scale it down
+        model = glm::scale(model, glm::vec3( 0.2f));
         ourShader.setMat4("model", model);
         reflector.Draw(ourShader);
 
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(3.8f,-1.2f,0.0f));
         model = glm::rotate(model, glm::radians(175.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::scale(model, glm::vec3( 0.2f));	// it's a bit too big for our scene, so scale it down
+        model = glm::scale(model, glm::vec3( 0.2f));
         ourShader.setMat4("model", model);
         reflector.Draw(ourShader);
 
@@ -628,7 +625,15 @@ int main()
     // optional
     glDeleteVertexArrays(1, &stageVAO);
     glDeleteVertexArrays(1, &centralLightVAO);
+    glDeleteVertexArrays(1, &transparentVAO);
+    glDeleteVertexArrays(1, &skyVAO);
+    glDeleteVertexArrays(1, &glassVAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &transparentVBO);
+    glDeleteBuffers(1, &skyVBO);
+    glDeleteBuffers(1, &glassVBO);
+    glDeleteBuffers(1, &EBO);
+
 
     // glfw: terminate, clearing all previously allocated GLFW resources
     glfwTerminate();
@@ -710,14 +715,13 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 
-    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-    {
-        turnOn1 = -turnOn1;
-    }
-    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-    {
-        turnOn2 = -turnOn2;
-    }
+  if(key == GLFW_KEY_1 and action == GLFW_PRESS){
+      turnOn1 = -turnOn1;
+  }
+
+  if(key == GLFW_KEY_2 and action == GLFW_PRESS){
+      turnOn2 = -turnOn2;
+  }
 
 }
 
